@@ -1,31 +1,18 @@
 # File Context Copy
 
-File Context Copy is a VS Code extension for copying selected text together with its file path, line numbers, and column numbers.
+Stop pasting anonymous code.
 
-It is useful when you want to paste code or text into:
+File Context Copy lets you copy selected text together with its file path, line range, and column range, so every snippet already includes the context the reader needs.
+
+It is especially useful when sharing code in:
 
 - AI tools
-- issue trackers
+- bug reports
 - pull request comments
-- documentation
+- technical documentation
 - chat messages
 
-Instead of pasting plain text with no context, you can copy output like:
-
-```text
-@src/utils/clamp.ts:1:1-3:2
-export function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
-```
-
-## Main features
-
-### 1. Enhanced copy
-
-When `fileContextCopy.enableEnhancedCopy` is enabled, normal `Ctrl+C` / `Cmd+C` copies the selected text together with a file reference header.
-
-Example source:
+Instead of pasting plain text like this:
 
 ```ts
 export function clamp(value: number, min: number, max: number) {
@@ -33,7 +20,7 @@ export function clamp(value: number, min: number, max: number) {
 }
 ```
 
-Copied result:
+you can paste this:
 
 ```text
 @src/utils/clamp.ts:1:1-3:2
@@ -42,48 +29,67 @@ export function clamp(value: number, min: number, max: number) {
 }
 ```
 
-Note:
-This feature only takes effect when `fileContextCopy.enableReferenceCopy` is turned off.
+## Why use File Context Copy
 
-### 2. Copy reference only
+When you share code, the missing context is usually the real problem.
 
-This command copies only the file reference, without the selected text.
+People reading a pasted snippet often need to ask:
+
+- Which file is this from?
+- Which lines does this refer to?
+- Is this the exact code or just an excerpt?
+
+File Context Copy solves that in one step by combining:
+
+- the selected text
+- the source file path
+- the exact line range
+- the exact column range
+
+## What you can do
+
+### 1. Enhanced Copy
+
+Turn normal `Ctrl+C` / `Cmd+C` into contextual copy.
+
+When `fileContextCopy.enableEnhancedCopy` is enabled, copying a selection will include a reference header automatically.
+
+Example output:
+
+```text
+@src/app.ts:8:5-10:20
+selected text...
+```
+
+This mode only takes effect when `fileContextCopy.enableReferenceCopy` is turned off.
+
+### 2. Copy Reference Only
+
+Copy just the location, without copying the selected text itself.
 
 Default shortcut:
+
 - Windows/Linux: `Ctrl+Shift+C`
 - macOS: `Cmd+Shift+C`
 
-Example source:
-
-```ts
-const answer = 42;
-```
-
-Copied result:
+Example output:
 
 ```text
 @src/constants.ts:1:1-1:18
 ```
 
-This is useful when you want to reference a location without duplicating the whole content.
+This is useful when you want to point to a location without duplicating the code.
 
-### 3. Copy selection with file reference
+### 3. Copy Selection With Reference
 
-This command keeps normal `Ctrl+C` unchanged and gives you a dedicated shortcut for copying the selection with context.
+Keep normal copy behavior unchanged and use a dedicated shortcut for structured copy.
 
 Default shortcut:
+
 - Windows/Linux: `Ctrl+Alt+C`
 - macOS: `Cmd+Alt+C`
 
-Example source:
-
-```ts
-function sum(a: number, b: number) {
-  return a + b;
-}
-```
-
-Copied result:
+Example output:
 
 ```text
 @src/math/sum.ts:1:1-3:2
@@ -92,35 +98,39 @@ function sum(a: number, b: number) {
 }
 ```
 
-This is useful when you want:
+This mode is ideal if you want:
 
-- normal `Ctrl+C` for plain text
-- a separate shortcut for structured copy
+- regular `Ctrl+C` for plain text
+- a separate shortcut for copy-with-context
 
-## Why use this extension
+## Common use cases
 
-VS Code can copy text.
-VS Code can also expose file paths in different ways.
-But VS Code does not provide a built-in workflow that combines:
+### Share code with AI tools
 
-- selected text
-- file path
-- line range
-- column range
-- custom copy shortcuts
+Give ChatGPT, Claude, Codex, or other AI tools the exact file and line location together with the snippet, so your prompt has better context immediately.
 
-File Context Copy fills that gap.
+### Write clearer bug reports
+
+Paste a precise file reference into issues so other people can jump to the exact location faster.
+
+### Leave better pull request comments
+
+Share the exact code and location in review discussions without manually typing file paths and ranges.
+
+### Create documentation faster
+
+Include reusable snippets that already show where they came from.
 
 ## Quick start
 
 1. Install the extension.
 2. Open Settings and search for `File Context Copy`.
 3. Choose the behavior you want:
-   `fileContextCopy.enableEnhancedCopy`
-   `fileContextCopy.enableReferenceOnly`
-   `fileContextCopy.enableReferenceCopy`
-4. Select text in any file.
-5. Use the shortcut or command you prefer.
+   - `fileContextCopy.enableEnhancedCopy`
+   - `fileContextCopy.enableReferenceOnly`
+   - `fileContextCopy.enableReferenceCopy`
+4. Select text in any editor.
+5. Use the shortcut or command that fits your workflow.
 
 ## Settings
 
@@ -128,7 +138,7 @@ File Context Copy fills that gap.
 
 When enabled, `Ctrl+C` / `Cmd+C` copies the selected text with a file reference header.
 
-Example output:
+Example:
 
 ```text
 @src/app.ts:8:5-10:20
@@ -142,7 +152,7 @@ This only works when `fileContextCopy.enableReferenceCopy` is turned off.
 Enables the command:
 `File Context Copy: Copy Reference Only`
 
-Example output:
+Example:
 
 ```text
 @src/app.ts:8:5-10:20
@@ -153,14 +163,14 @@ Example output:
 Enables the command:
 `File Context Copy: Copy Selection With Reference`
 
-Example output:
+Example:
 
 ```text
 @src/app.ts:8:5-10:20
 selected text...
 ```
 
-When this setting is enabled, it takes priority over Enhanced Copy, so normal `Ctrl+C` keeps copying the original text.
+When this setting is enabled, it takes priority over Enhanced Copy, so normal `Ctrl+C` remains plain copy.
 
 ### `fileContextCopy.pathStyle`
 
@@ -191,94 +201,19 @@ The extension contributes these commands:
 - `File Context Copy: Configure Copy Reference Only Shortcut`
 - `File Context Copy: Configure Copy Selection With Reference Shortcut`
 
-## Shortcut setup
-
-Default shortcuts:
+## Default shortcuts
 
 - Enhanced Copy: `Ctrl+C` / `Cmd+C`
 - Copy Reference Only: `Ctrl+Shift+C` / `Cmd+Shift+C`
 - Copy Selection With Reference: `Ctrl+Alt+C` / `Cmd+Alt+C`
 
-You can override the shortcuts in VS Code Keyboard Shortcuts:
+You can change these in VS Code Keyboard Shortcuts:
 
 1. Open Keyboard Shortcuts.
 2. Search for `File Context Copy`.
-3. Edit the commands you want.
+3. Edit the shortcuts you want.
 
-You can also run these commands from the Command Palette to jump directly to the shortcut entries:
+You can also run these commands from the Command Palette to jump directly to the relevant shortcut entries:
 
 - `File Context Copy: Configure Copy Reference Only Shortcut`
 - `File Context Copy: Configure Copy Selection With Reference Shortcut`
-
-## Example workflows
-
-### Share a code snippet in chat
-
-Copy:
-
-```text
-@src/api/client.ts:24:1-30:2
-async function request(path: string) {
-  return fetch(path);
-}
-```
-
-This gives the reader both the content and the exact location.
-
-### Reference a file location in a bug report
-
-Copy:
-
-```text
-@src/components/LoginForm.tsx:52:7-52:28
-```
-
-This is compact and easy to paste into an issue or pull request comment.
-
-## Run locally
-
-This project is a VS Code extension, so the normal local workflow is to compile it and launch an Extension Development Host window.
-
-### 1. Install dependencies
-
-```bash
-npm install
-```
-
-### 2. Compile the extension
-
-```bash
-npm run compile
-```
-
-If you want TypeScript to rebuild automatically while editing:
-
-```bash
-npm run watch
-```
-
-### 3. Start the extension in VS Code
-
-1. Open this project folder in VS Code.
-2. Press `F5`.
-3. VS Code will open a new `Extension Development Host` window.
-
-### 4. Try the extension
-
-In the Extension Development Host window:
-
-1. Open any file inside a workspace.
-2. Select some text in the editor.
-3. Use one of these commands from the Command Palette:
-   - `File Context Copy: Enhanced Ctrl+C`
-   - `File Context Copy: Copy Reference Only`
-   - `File Context Copy: Copy Selection With Reference`
-4. Or enable the related settings and test the keyboard shortcuts directly.
-
-### 5. Package a VSIX
-
-If you want to build an installable extension package:
-
-```bash
-npm run package:vsix
-```

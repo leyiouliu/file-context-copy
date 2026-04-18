@@ -2,7 +2,7 @@
   "name": "file-context-copy",
   "displayName": "File Context Copy",
   "description": "Copy selections with file path, line and column context.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "leyiouliu",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -26,6 +26,12 @@
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "clipboard",
+    "copy-with-context",
+    "developer-productivity",
+    "ai"
   ],
   "activationEvents": [
     "onCommand:fileContextCopy.enhancedCopy",
