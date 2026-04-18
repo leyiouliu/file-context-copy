@@ -1,0 +1,121 @@
+{
+  "name": "file-context-copy",
+  "displayName": "File Context Copy",
+  "description": "Copy selections with file path, line and column context.",
+  "version": "0.0.1",
+  "publisher": "leyiouliu",
+  "license": "MIT",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leyiouliu/file-context-copy.git"
+  },
+  "homepage": "https://github.com/leyiouliu/file-context-copy#readme",
+  "bugs": {
+    "url": "https://github.com/leyiouliu/file-context-copy/issues"
+  },
+  "files": [
+    "assets",
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "engines": {
+    "vscode": "^1.52.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:fileContextCopy.enhancedCopy",
+    "onCommand:fileContextCopy.copyReferenceOnly",
+    "onCommand:fileContextCopy.copySelectionWithReference",
+    "onCommand:fileContextCopy.configureReferenceOnlyShortcut",
+    "onCommand:fileContextCopy.configureReferenceCopyShortcut"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fileContextCopy.enhancedCopy",
+        "title": "File Context Copy: Enhanced Ctrl+C"
+      },
+      {
+        "command": "fileContextCopy.copyReferenceOnly",
+        "title": "File Context Copy: Copy Reference Only"
+      },
+      {
+        "command": "fileContextCopy.copySelectionWithReference",
+        "title": "File Context Copy: Copy Selection With Reference"
+      },
+      {
+        "command": "fileContextCopy.configureReferenceOnlyShortcut",
+        "title": "File Context Copy: Configure Copy Reference Only Shortcut"
+      },
+      {
+        "command": "fileContextCopy.configureReferenceCopyShortcut",
+        "title": "File Context Copy: Configure Copy Selection With Reference Shortcut"
+      }
+    ],
+    "configuration": {
+      "title": "File Context Copy",
+      "properties": {
+        "fileContextCopy.enableEnhancedCopy": {
+          "type": "boolean",
+          "default": true,
+          "description": "When enabled, Ctrl+C copies selected text with a file reference header on the first line. This only takes effect when Enable Reference Copy is turned off."
+        },
+        "fileContextCopy.enableReferenceOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, the copy-reference-only command is active. The default shortcut is Ctrl+Shift+C / Cmd+Shift+C, and users can override it in Keyboard Shortcuts."
+        },
+        "fileContextCopy.enableReferenceCopy": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, the copy-selection-with-reference command is active. The default shortcut is Ctrl+Alt+C / Cmd+Alt+C, and users can override it in Keyboard Shortcuts. This setting takes priority over Enhanced Ctrl+C so regular Ctrl+C remains unchanged."
+        },
+        "fileContextCopy.pathStyle": {
+          "type": "string",
+          "enum": [
+            "workspaceRelative",
+            "absolute"
+          ],
+          "default": "workspaceRelative",
+          "description": "Controls whether copied paths use workspace-relative or absolute paths."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "fileContextCopy.enhancedCopy",
+        "key": "ctrl+c",
+        "mac": "cmd+c",
+        "when": "editorTextFocus && editorHasSelection && config.fileContextCopy.enableEnhancedCopy && !config.fileContextCopy.enableReferenceCopy"
+      },
+      {
+        "command": "fileContextCopy.copyReferenceOnly",
+        "key": "ctrl+shift+c",
+        "mac": "cmd+shift+c",
+        "when": "editorTextFocus && editorHasSelection && config.fileContextCopy.enableReferenceOnly"
+      },
+      {
+        "command": "fileContextCopy.copySelectionWithReference",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus && editorHasSelection && config.fileContextCopy.enableReferenceCopy"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./",
+    "package:vsix": "npx @vscode/vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/vscode": "^1.52.0",
+    "typescript": "^5.8.3"
+  }
+}
